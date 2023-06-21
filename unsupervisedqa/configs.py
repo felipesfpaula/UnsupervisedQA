@@ -40,10 +40,10 @@ MAX_QUESTION_WORDSIZE_THRESHOLD = 20
 
 
 ## Spacy Configs:
-SPACY_MODEL = 'en'
+SPACY_MODEL = 'en_core_web_sm'
 
 ## constituency parser configs:
-CONSTITUENCY_MODEL = "https://s3-us-west-2.amazonaws.com/allennlp/models/elmo-constituency-parser-2018.03.14.tar.gz"
+CONSTITUENCY_MODEL = "https://storage.googleapis.com/allennlp-public-models/elmo-constituency-parser-2020.02.10.tar.gz"
 CONSTITUENCY_BATCH_SIZE = 32
 CONSTITUENCY_CUDA = 0
 CLOZE_SYNTACTIC_TYPES = {'S', }
