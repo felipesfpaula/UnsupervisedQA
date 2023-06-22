@@ -12,7 +12,7 @@ import attr
 import stanza
 from tqdm import tqdm
 from nltk import Tree
-from .configs import CONSTITUENCY_MODEL, CONSTITUENCY_BATCH_SIZE, CONSTITUENCY_CUDA, CLOZE_SYNTACTIC_TYPES
+from .configs import CONSTITUENCY_MODEL, CONSTITUENCY_BATCH_SIZE, CONSTITUENCY_CUDA, CLOZE_SYNTACTIC_TYPES, STANZA_MODEL_DIR
 from .generate_clozes import mask_answer
 from .data_classes import Cloze
 
@@ -20,7 +20,8 @@ from .data_classes import Cloze
 def _load_constituency_parser(lang):
     nlp = stanza.Pipeline(lang, 
                           processors='tokenize, pos, constituency', 
-                          use_gpu= CONSTITUENCY_CUDA)
+                          use_gpu= CONSTITUENCY_CUDA,
+                          model_dir=STANZA_MODEL_DIR)
     return nlp
 
 

@@ -42,10 +42,14 @@ MAX_QUESTION_WORDSIZE_THRESHOLD = 20
 ## Spacy Configs:
 SPACY_MODEL = 'en_core_web_sm'
 
+if 'google.colab' in str(get_ipython()):
+    STANZA_MODEL_DIR = '/content/mnt/MyDrive/Colab Notebooks/stanza_resources'
+else:
+    STANZA_MODEL_DIR = '~/stanza_resources'
+
 ## constituency parser configs:
-CONSTITUENCY_MODEL = "https://storage.googleapis.com/allennlp-public-models/elmo-constituency-parser-2020.02.10.tar.gz"
 CONSTITUENCY_BATCH_SIZE = 32
-CONSTITUENCY_CUDA = 0
+CONSTITUENCY_CUDA = False
 CLOZE_SYNTACTIC_TYPES = {'S', }
 
 
