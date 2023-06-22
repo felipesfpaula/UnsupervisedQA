@@ -9,8 +9,7 @@ Functionality to do constituency parsing, used for shortening cloze questions. W
 Parsing model from Stern et. al, 2018 "A Minimal Span-Based Neural Constituency Parser" arXiv:1705.03919
 """
 import attr
-from allennlp.models.archival import load_archive
-from allennlp.predictors import Predictor
+import stanza
 from tqdm import tqdm
 from nltk import Tree
 from .configs import CONSTITUENCY_MODEL, CONSTITUENCY_BATCH_SIZE, CONSTITUENCY_CUDA, CLOZE_SYNTACTIC_TYPES
@@ -18,22 +17,26 @@ from .generate_clozes import mask_answer
 from .data_classes import Cloze
 
 
-def _load_constituency_parser():
-    archive = load_archive(CONSTITUENCY_MODEL, cuda_device=CONSTITUENCY_CUDA)
-    return Predictor.from_archive(archive, 'constituency-parser')
+def _load_constituency_parser(lang):
+    nlp = stanza.Pipeline(lang, 
+                          processors='tokenize, pos, constituency', 
+                          use_gpu= CONSTITUENCY_CUDA)
+    return nlp
 
 
-def get_constituency_parsed_clozes(clozes, predictor=None, verbose=True, desc='Running Constituency Parsing'):
+def get_constituency_parsed_clozes(clozes, lang, predictor=None, verbose=True, desc='Running Constituency Parsing'):
     if predictor is None:
-        predictor = _load_constituency_parser()
+        predictor = _load_constituency_parser(lang)
     jobs = range(0, len(clozes), CONSTITUENCY_BATCH_SIZE)
     for i in tqdm(jobs, desc=desc, ncols=80) if verbose else jobs:
         input_batch = clozes[i: i + CONSTITUENCY_BATCH_SIZE]
-        output_batch = predictor.predict_batch_json([{'sentence': c.source_text} for c in input_batch])
+        sentence_batch = "\n".join([c.source_text for c in input_batch])
+        output_batch = predictor(sentence_batch).sentences
         for c, t in zip(input_batch, output_batch):
-            root = _get_root_type(t['trees'])
+            constituency_tree = t.constituency.children[0]
+            root = _get_root_type(str(constituency_tree))
             if root in CLOZE_SYNTACTIC_TYPES:
-                c_with_parse = attr.evolve(c, constituency_parse=t['trees'], root_label=root)
+                c_with_parse = attr.evolve(c, constituency_parse=str(constituency_tree), root_label=root)
                 yield c_with_parse
 
 
