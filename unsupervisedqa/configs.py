@@ -9,6 +9,12 @@ Config file for UnsupervisedQA
 """
 import os
 
+try:
+  import google.colab
+  IN_COLAB = True
+except:
+  IN_COLAB = False
+
 HERE = os.path.dirname(os.path.realpath(__file__))
 SEED = 10
 
@@ -42,7 +48,7 @@ MAX_QUESTION_WORDSIZE_THRESHOLD = 20
 ## Spacy Configs:
 SPACY_MODEL = 'en_core_web_sm'
 
-if 'google.colab' in str(get_ipython()):
+if IN_COLAB:
     STANZA_MODEL_DIR = '/content/mnt/MyDrive/Colab Notebooks/stanza_resources'
 else:
     STANZA_MODEL_DIR = '~/stanza_resources'

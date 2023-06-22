@@ -7,6 +7,17 @@
 """
 Main interface to user
 """
+try:
+  import google.colab
+  IN_COLAB = True
+except:
+  IN_COLAB = False
+
+import sys
+if IN_COLAB:
+    my_library_path = '/content/mnt/MyDrive/Colab Notebooks'
+    sys.path.append(my_library_path)
+
 import attr
 import argparse
 import os
