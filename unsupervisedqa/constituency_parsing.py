@@ -12,7 +12,7 @@ import attr
 import stanza
 from tqdm import tqdm
 from nltk import Tree
-from .configs import CONSTITUENCY_MODEL, CONSTITUENCY_BATCH_SIZE, CONSTITUENCY_CUDA, CLOZE_SYNTACTIC_TYPES, STANZA_MODEL_DIR
+from .configs import CONSTITUENCY_BATCH_SIZE, CONSTITUENCY_CUDA, CLOZE_SYNTACTIC_TYPES, STANZA_MODEL_DIR
 from .generate_clozes import mask_answer
 from .data_classes import Cloze
 

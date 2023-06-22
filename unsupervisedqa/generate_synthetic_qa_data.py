@@ -109,7 +109,7 @@ def generate_synthetic_training_data(args):
     clozes = [c for p in paragraphs for c in generate_clozes_from_paragraph(p, answer_generator)]
 
     if args.use_subclause_clozes:
-        syntax_clozes = get_constituency_parsed_clozes(clozes)
+        syntax_clozes = get_constituency_parsed_clozes(clozes,lang = "en")
         clozes = [short_cloze for cloze in syntax_clozes for short_cloze in shorten_cloze(cloze)]
         #clozes = list(get_constituency_parsed_clozes(clozes))
     print('=' * 50)
