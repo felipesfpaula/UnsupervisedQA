@@ -14,6 +14,7 @@ import attr
 class Paragraph:
     paragraph_id = attr.ib()
     text = attr.ib()
+    entities = attr.ib()
 
 
 @attr.s(hash=True)
